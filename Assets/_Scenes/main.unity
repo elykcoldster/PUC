@@ -4080,7 +4080,7 @@ Prefab:
     - target: {fileID: 114363577833966648, guid: 43b68d31054263a469ed0f1119742d89,
         type: 2}
       propertyPath: spawnRate
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1052901720683202, guid: 43b68d31054263a469ed0f1119742d89, type: 2}
       propertyPath: m_StaticEditorFlags

@@ -18,11 +18,12 @@ public class GameManager : Singleton<GameManager> {
 
 	protected List<Barn> barns;
 
-	protected int level, points;
+	protected int level, points, pointMultiplier;
 
 	protected override void Awake() {
 		base.Awake ();
 		this.points = STARTING_MONEY;
+		this.pointMultiplier = 1;
 		this.level = 1;
 	}
 
@@ -98,7 +99,7 @@ public class GameManager : Singleton<GameManager> {
 	}
 
 	public void GainPoints() {
-		this.points += 15 + Random.Range (-3, 4);
+		this.points += (15 + Random.Range (-3, 4)) * pointMultiplier;
 		GameUI.Instance.UpdateMoney ();
 	}
 
@@ -111,6 +112,10 @@ public class GameManager : Singleton<GameManager> {
 		GameUI.Instance.UpdateMoney ();
 
 		return true;
+	}
+
+	public void IncreaseMultiplier() {
+		this.pointMultiplier++;
 	}
 
 }

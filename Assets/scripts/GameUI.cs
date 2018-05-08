@@ -80,6 +80,7 @@ public class GameUI : PersistentSingleton<GameUI> {
 	}
 
 	public void Stop() {
+		Destroy (Attractor.Instance.gameObject);
 		GameManager.Instance.ClearAllChickens ();
 		GameController.Instance.SetGameState (GameState.Menu);
 
