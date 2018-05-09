@@ -23,6 +23,11 @@ public class ChickenMovement : MonoBehaviour {
 	}
 
 	protected void OnMouseDown() {
+
+		if (GameController.Instance.gameState != GameState.Playing) {
+			return;
+		}
+
 		RaycastHit hit;
 		int layerMask = 1 << LayerMask.NameToLayer ("Ground");
 

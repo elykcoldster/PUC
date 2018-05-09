@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.AI;
 
 public enum PlacementState {
@@ -13,6 +14,8 @@ public class Placeable : MonoBehaviour {
 
 	[SerializeField]
 	protected int cost = 20;
+	[SerializeField]
+	protected string placeableName = "Object";
 
 	protected PlacementState state;
 
@@ -24,6 +27,22 @@ public class Placeable : MonoBehaviour {
 	protected Color matColor, invalidColor = new Color(1f, 0f, 0f, 1f);
 
 	protected List<Collider> collisions;
+
+	public int Cost {
+		get { return this.cost; }
+	}
+
+	public string Name {
+		get { return this.placeableName; }
+	}
+
+	public Vector3 Size {
+		get{ return this.coll.bounds.size; }
+	}
+
+	public PlacementState State {
+		get { return this.state; }
+	}
 
 	// Use this for initialization
 	protected virtual void Awake () {
@@ -55,7 +74,7 @@ public class Placeable : MonoBehaviour {
 	}
 
 	protected void CheckCancel() {
-		if (Input.GetKeyDown (KeyCode.Escape)) {
+		if (Input.GetKeyDown (KeyCode.Escape) && state != PlacementState.Placed) {
 			Destroy (GridPlacement.Instance.gameObject);
 			Destroy (gameObject);
 		}
@@ -69,11 +88,12 @@ public class Placeable : MonoBehaviour {
 
 		if (Input.GetMouseButtonDown (0) && state != PlacementState.Collision) {
 
-			if (!GameManager.Instance.SpendPoints (this.cost)) {
+			if (GameController.Instance.mouseState == MouseState.UI || !GameManager.Instance.SpendPoints (this.cost)) {
 				return;
 			}
 
 			this.state = PlacementState.Placed;
+			transform.SetParent (GameManager.Instance.PlacedObjects.transform);
 			SetObjectCollision (true);
 
 			GridPlacement.Instance.PlacementComplete ();
@@ -151,9 +171,16 @@ public class Placeable : MonoBehaviour {
 		collisions.Remove (c);
 	}
 
-
 	protected void SetObjectCollision(bool v) {
 		coll.isTrigger = !v;
 		obs.enabled = v;
+	}
+
+	protected void OnMouseDown() {
+		if (state != PlacementState.Placed || GameController.Instance.gameState == GameState.Playing) {
+			return;
+		}
+
+		GameUI.Instance.CreateContextMenu (this);
 	}
 }

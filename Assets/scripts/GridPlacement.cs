@@ -14,9 +14,13 @@ public class GridPlacement : Singleton<GridPlacement> {
 	}
 
 	protected void InitPrefab() {
+		if (this.prefabInstance != null && this.prefabInstance.State != PlacementState.Placed) {
+			Destroy (prefabInstance.gameObject);
+		}
+
 		this.prefabInstance = (Instantiate<GameObject> (
 			this.placementPrefab,
-			this.transform.position,
+			this.transform.position-Vector3.up,
 			Quaternion.identity
 		)).GetComponent<Placeable> ();
 		this.prefabInstance.SetMarker (this.transform);

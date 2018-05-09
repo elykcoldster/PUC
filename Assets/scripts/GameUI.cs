@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class GameUI : PersistentSingleton<GameUI> {
 
 	[SerializeField]
-	protected GameObject statsUI;
+	protected Canvas statsUI;
 	[SerializeField]
 	protected GameObject placementUI;
 	[SerializeField]
@@ -25,6 +25,8 @@ public class GameUI : PersistentSingleton<GameUI> {
 	protected Text moneyText;
 	[SerializeField]
 	protected Text popupText;
+	[SerializeField]
+	protected GameObject contextMenu;
 
 	protected Animator popupAnimator;
 
@@ -80,7 +82,10 @@ public class GameUI : PersistentSingleton<GameUI> {
 	}
 
 	public void Stop() {
-		Destroy (Attractor.Instance.gameObject);
+		if (Attractor.Instance != null) {
+			Destroy (Attractor.Instance.gameObject);
+		}
+
 		GameManager.Instance.ClearAllChickens ();
 		GameController.Instance.SetGameState (GameState.Menu);
 
@@ -89,6 +94,10 @@ public class GameUI : PersistentSingleton<GameUI> {
 	}
 
 	public void Pause() {
+		if (GameController.Instance.gameState != GameState.Playing) {
+			return;
+		}
+
 		GameController.Instance.SetGameState (GameState.Pause);
 
 		play.interactable = true;
@@ -112,6 +121,11 @@ public class GameUI : PersistentSingleton<GameUI> {
 
 	public void UpdateLevel() {
 		levelText.text = "Level: " + GameManager.Instance.Level.ToString ();
+	}
+
+	public void CreateContextMenu(Placeable p) {
+		Instantiate (contextMenu, statsUI.transform);
+		ContextMenu.Instance.SetContext (p.gameObject);
 	}
 
 }

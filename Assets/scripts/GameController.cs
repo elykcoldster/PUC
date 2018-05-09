@@ -9,6 +9,11 @@ public enum GameState {
 	Menu,
 }
 
+public enum MouseState {
+	Default,
+	UI
+}
+
 public class GameController : Singleton<GameController> {
 
 	protected static float GUIObjectSpacing = 10f;
@@ -22,6 +27,7 @@ public class GameController : Singleton<GameController> {
 	protected GameObject[] GUIObjects;
 
 	public GameState gameState;
+	public MouseState mouseState;
 
 	protected override void Awake() {
 		base.Awake ();

@@ -16,6 +16,11 @@ public class GameManager : Singleton<GameManager> {
 	[SerializeField]
 	protected Transform chickenTarget;
 
+	public GameObject PlacedObjects {
+		private set;
+		get;
+	}
+
 	protected List<Barn> barns;
 
 	protected int level, points, pointMultiplier;
@@ -25,6 +30,9 @@ public class GameManager : Singleton<GameManager> {
 		this.points = STARTING_MONEY;
 		this.pointMultiplier = 1;
 		this.level = 1;
+
+		PlacedObjects = new GameObject ();
+		PlacedObjects.name = "PlacedObjects";
 	}
 
 	public GameObject Chicken {
@@ -100,6 +108,11 @@ public class GameManager : Singleton<GameManager> {
 
 	public void GainPoints() {
 		this.points += (15 + Random.Range (-3, 4)) * pointMultiplier;
+		GameUI.Instance.UpdateMoney ();
+	}
+
+	public void GainPoints(int n) {
+		this.points += n;
 		GameUI.Instance.UpdateMoney ();
 	}
 

@@ -9,7 +9,7 @@ public class Barn : MonoBehaviour {
 	[SerializeField]
 	protected float spawnRate = 1f;
 
-	private int capacity;
+	public int capacity;
 	private float spawnTimer = 0f;
 
 	public int Capacity {

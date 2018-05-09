@@ -3,14 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GUIButton3D : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	public void SetMouseState(bool v) {
+		GameController.Instance.mouseState = v ? MouseState.UI : MouseState.Default;
 	}
 }
