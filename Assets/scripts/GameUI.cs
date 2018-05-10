@@ -77,6 +77,10 @@ public class GameUI : PersistentSingleton<GameUI> {
 		}
 		GameController.Instance.SetGameState (GameState.Playing);
 
+		if (GridPlacement.Instance != null) {
+			GridPlacement.Instance.Cancel ();
+		}
+
 		play.interactable = false;
 		pause.interactable = true;
 	}

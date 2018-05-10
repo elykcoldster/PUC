@@ -44,7 +44,7 @@ public class GameController : Singleton<GameController> {
 	protected void InitGUI() {
 		for (int i = 0; i < GUIObjects.Length; i++) {
 			GameObject obj = Instantiate<GameObject> (GUIObjects[i],
-				GUIObjectPosition - Vector3.down * GUIObjectSpacing * i,
+				GUIObjectPosition + Vector3.down * GUIObjectSpacing * i,
 				GUIObjects[i].transform.rotation
 			);
 
@@ -57,18 +57,23 @@ public class GameController : Singleton<GameController> {
 
 		// Get object prefab
 		GameObject prefab = obj.GetComponent<Placement>().PlacementPrefab;
-
 		// Create new camera and set position to be centered on the GUI object
 		Camera cam = (Instantiate (GUICameraObject,
-			GUIObjectPosition - Vector3.forward + Vector3.up * obj.GetComponent<MeshRenderer> ().bounds.size.y / 2f,
+			obj.transform.position - Vector3.forward + Vector3.up * obj.GetComponentInChildren<MeshRenderer> ().bounds.size.y / 2f,
 			Quaternion.Euler (new Vector3 (0f, 0f, -45f))
 		)).GetComponent<Camera> ();
+
+		// rotate obj
+		obj.transform.rotation = Quaternion.Euler(obj.GetComponent<Placement>().EulerRotation);
 
 		// Adjust camera position on the UI
 		float aspect = (float)Screen.height / (float)Screen.width;
 		cam.rect = new Rect (1- aspect * 0.1f, 0.9f - 0.1f * index, 0.1f * aspect, 0.1f);
 
 		cam.transform.SetParent (obj.transform);
+
+		// rotate camera
+		obj.transform.Rotate(obj.GetComponent<Placement>().CamRotation);
 
 		// Add canvas to camera
 		Canvas canvas = (Instantiate<GameObject>(GUIButtonBackground)).GetComponent<Canvas>();
@@ -79,7 +84,7 @@ public class GameController : Singleton<GameController> {
 		b.onClick.AddListener (() => CreateGridPlacement(prefab));
 	}
 
-	protected void CreateGridPlacement(GameObject prefab) {
+	public void CreateGridPlacement(GameObject prefab) {
 		if (GridPlacement.Instance == null) {
 			GridPlacement gp = (Instantiate (GameManager.Instance.GridPlacementPrefab)).GetComponent<GridPlacement> ();
 			gp.SetPlacementPrefab (prefab);
@@ -99,5 +104,9 @@ public class GameController : Singleton<GameController> {
 
 	public void SetGameState(GameState gs) {
 		this.gameState = gs;
+	}
+
+	public void SetMouseState(bool v) {
+		this.mouseState = v ? MouseState.UI : MouseState.Default;
 	}
 }

@@ -31,6 +31,13 @@ public class PlaceableContextGUI : ContextGUI {
 		placeable = p;
 	}
 
+	public void Move() {
+		GameManager.Instance.GainPoints (costToRefund);
+		GameController.Instance.CreateGridPlacement (placeable.gameObject);
+		Destroy (placeable.gameObject);
+		Disappear ();
+	}
+
 	public void Refund() {
 		GameManager.Instance.GainPoints (costToRefund);
 		Disappear ();

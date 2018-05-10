@@ -3,10 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+public enum ChickenState {
+	Default,
+	Chaos
+}
+
 [RequireComponent(typeof(NavMeshAgent))]
 public class ChickenMovement : MonoBehaviour {
 
 	private NavMeshAgent agent;
+	protected ChickenState state;
+
+	public ChickenState State {
+		get { return this.state; }
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -15,10 +25,18 @@ public class ChickenMovement : MonoBehaviour {
 	}
 
 	protected void Update() {
-		if (GameController.Instance.gameState != GameState.Playing) {
+		if (GameController.Instance.gameState != GameState.Playing && agent.enabled) {
 			agent.ResetPath ();
 		} else {
 			InitializeMovement ();
+		}
+	}
+
+	protected void OnCollisionEnter(Collision c) {
+		if (c.gameObject.layer == LayerMask.NameToLayer ("Ground")) {
+			agent.enabled = true;
+			InitializeMovement ();
+			SetState (ChickenState.Default);
 		}
 	}
 
@@ -42,5 +60,14 @@ public class ChickenMovement : MonoBehaviour {
 		if (agent.enabled) {
 			agent.SetDestination (GameManager.Instance.ChickenTarget.position);
 		}
+	}
+
+	public void CancelNavigation(bool trigger) {
+		agent.enabled = false;
+		GetComponent<Collider> ().isTrigger = trigger;
+	}
+
+	public void SetState(ChickenState cs) {
+		this.state = cs;
 	}
 }

@@ -34,6 +34,7 @@ public class Attractor : Singleton<Attractor> {
 
 		foreach (Transform c in chickens) {
 			c.position = transform.position;
+			c.GetComponent<ChickenMovement>().SetState(ChickenState.Chaos);
 		}
 	}
 
@@ -41,11 +42,11 @@ public class Attractor : Singleton<Attractor> {
 		if (chickens == null) {
 			return;
 		}
-
+		/*
 		foreach (Transform c in chickens) {
 			c.GetComponent<NavMeshAgent> ().enabled = true;
 			c.GetComponent<ChickenMovement> ().InitializeMovement ();
-		}
+		}*/
 	}
 
 	public void AddChicken(Transform c) {

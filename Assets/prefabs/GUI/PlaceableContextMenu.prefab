@@ -206,6 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c798aba100eb7a44b99ece71d954615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GUIState: 0
   nameText: {fileID: 114727869995164388}
   refundButton: {fileID: 114839756747489178}
   moveButton: {fileID: 114625609481658696}
@@ -321,7 +322,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114485472169094080}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114478126545405088}
+        m_MethodName: Move
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114727869995164388

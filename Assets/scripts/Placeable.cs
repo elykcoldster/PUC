@@ -52,7 +52,7 @@ public class Placeable : MonoBehaviour {
 		state = PlacementState.Placing;
 
 		coll = GetComponent<Collider> ();
-		mat = GetComponent<MeshRenderer> ().material;
+		mat = GetComponentInChildren<MeshRenderer> ().material;
 		matColor = mat.color;
 		obs = GetComponent<NavMeshObstacle> ();
 
@@ -74,9 +74,8 @@ public class Placeable : MonoBehaviour {
 	}
 
 	protected void CheckCancel() {
-		if (Input.GetKeyDown (KeyCode.Escape) && state != PlacementState.Placed) {
-			Destroy (GridPlacement.Instance.gameObject);
-			Destroy (gameObject);
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			GridPlacement.Instance.Cancel ();
 		}
 	}
 
@@ -173,7 +172,9 @@ public class Placeable : MonoBehaviour {
 
 	protected void SetObjectCollision(bool v) {
 		coll.isTrigger = !v;
-		obs.enabled = v;
+		if (obs != null) {
+			obs.enabled = v;
+		}
 	}
 
 	protected void OnMouseDown() {

@@ -51,4 +51,12 @@ public class GridPlacement : Singleton<GridPlacement> {
 			Destroy (gameObject);
 		}
 	}
+
+	public void Cancel() {
+		if (prefabInstance.State != PlacementState.Placed) {
+			Destroy (prefabInstance.gameObject);
+		}
+
+		Destroy (gameObject);
+	}
 }
